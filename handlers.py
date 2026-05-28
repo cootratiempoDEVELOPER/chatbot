@@ -37,14 +37,19 @@ def handle_pqrs(text, session, phone_number, send):
     
     if step == "1":
         yes_no = text.lower()
-        if yes_no not in ["si", "no"]:
+        if yes_no != "no" and yes_no != "si":
             send("Por favor ingresa Si o No", phone_number)
         if yes_no == "si":
             session["step"] = 2
             send("Ingrese su numero de documento:\n", phone_number)
         else:
             send("Debido a que no aceptas las politicas de datos, no podemos ayudarte a registrar tu PQRS.", phone_number)
-            return "end"
+            session["step"] = 1
+            session["opcion"] = 0
+            
+            send(welcome_message, phone_number)
+            
+            return session
     if step == "2":
         try:
             documento = int(text)
