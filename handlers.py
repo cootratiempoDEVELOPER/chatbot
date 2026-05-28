@@ -19,7 +19,6 @@ def handle_main_menu(text, session, phone_number, send):
     return session
 
 def handle_info_servicios(text, session, phone_number, send):
-    print(f"Texto recibido: {text}")
     if text == "menu":
         session["option"] = 0
         send(welcome_message, phone_number)
@@ -35,8 +34,18 @@ def handle_info_servicios(text, session, phone_number, send):
 
 def handle_pqrs(text, session, phone_number, send):
     step = session.get("step", 0)
-
+    
     if step == "1":
+        yes_no = text.lower()
+        if yes_no not in ["si", "no"]:
+            send("Por favor ingresa Si o No")
+        if yes_no == "si":
+            session["step"] = 2
+            send("Ingrese su numero de documento:\n", phone_number)
+        else:
+            send("Debido a que no aceptas las politicas de datos, no podemos ayudarte a registrar tu PQRS.")
+            return "end"
+    if step == "2":
         try:
             documento = int(text)
             if documento <= 0:
@@ -44,12 +53,12 @@ def handle_pqrs(text, session, phone_number, send):
             if len(str(documento)) < 6 or len(str(documento)) > 11:
                 raise ValueError("El número de documento debe tener entre 6 y 11 digitos.")
             session["document"] = documento
-            session["step"] = 2
+            session["step"] = 3
             send("Por favor, ingrese su nombre completo:", phone_number)
         except ValueError:
             send("Número de documento inválido. Ingrese un valor numerico", phone_number)
 
-    elif step == "2":
+    elif step == "3":
         nombre = text.strip()
 
         # 1. Verifica si está vacío
@@ -78,10 +87,10 @@ def handle_pqrs(text, session, phone_number, send):
 
         # ✅ Si pasa todas las validaciones, guarda en la sesión
         session["name"] = nombre
-        session["step"] = 3
+        session["step"] = 4
         send("Por favor, ingrese su correo electrónico:", phone_number)
 
-    elif step == "3":
+    elif step == "4":
         email = text.strip()
         if "@" not in email or "." not in email:
             send("Correo electrónico inválido. Por favor, ingrese un correo válido.", phone_number)
@@ -94,25 +103,25 @@ def handle_pqrs(text, session, phone_number, send):
             send("El nombre de usuario del correo debe tener al menos 3 caracteres.", phone_number)
             return session
         session["email"] = email
-        session["step"] = 4
+        session["step"] = 5
 
         optionsText, successOptions, options = optionsPqrs()
         
         send(optionsText, phone_number)
 
-    elif step == "4":
+    elif step == "5":
         optionsText, successOptions, options = optionsPqrs()
         if text in successOptions:
             # send("Por favor, ingresa una descripcion de tu pqrs, en caso de no requerir ingresa, *No*\n", phone_number)
             send("Desea registrar una descripción? *Si/No*", phone_number)
             findOption = [i["id"] for i in options if i['index'] == int(text)][0]
             session["pqrs"] = findOption
-            session["step"] = 5
+            session["step"] = 6
             return session
         else:
             send(f"Por favor, selecciona un número válido.\n {optionsText}", phone_number)
 
-    elif step == "5":
+    elif step == "6":
         text = text.strip().lower()
         if text not in ["si", "no"]:
             send("Por favor, responde con *Si* o *No*.", phone_number)
@@ -132,10 +141,10 @@ def handle_pqrs(text, session, phone_number, send):
             return "end"
         
         send("Ingresa la descripción de tu PQRS.", phone_number)
-        session["step"] = 6
+        session["step"] = 7
         return session
         
-    elif step == "6":
+    elif step == "7":
         badWords = getBadWords()
         descripcion = text.strip()
         palabras = text.split()
