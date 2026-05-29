@@ -1,25 +1,25 @@
 from messages import welcome_message, info_servicios, horarios_atencion, pqrs, optionsPqrs, getBadWords, createPqrs
 
-
+buttons = [
+    {
+        "type": "reply",
+        "reply": {
+            "id": "accept_yes",
+            "title": "Sí"
+        }
+    },
+    {
+        "type": "reply",
+        "reply": {
+            "id": "accept_no",
+            "title": "No"
+        }
+    }
+]
+    
 
 def handle_main_menu(text, session, phone_number, send, sendButtons):
-    buttons = [
-        {
-            "type": "reply",
-            "reply": {
-                "id": "accept_yes",
-                "title": "Sí"
-            }
-        },
-        {
-            "type": "reply",
-            "reply": {
-                "id": "accept_no",
-                "title": "No"
-            }
-        }
-    ]
-    
+
     if text == "1":
         send(info_servicios, phone_number)
         session["option"] = 1
@@ -65,11 +65,20 @@ def handle_pqrs(text, session, phone_number, send, sendButtons):
         if yes_no == "accept_yes":
             session["step"] = 2
             send("Ingrese su numero de documento:\n", phone_number)
-        else:
+        elif yes_no == "accept_no":
             session["step"] = 1
             session["opcion"] = 0
-            send("Debido a que no aceptas las politicas de datos, no podemos ayudarte a registrar tu PQRS.", phone_number)
+            send("Debido a que no aceptas las políticas de tratamiento de datos, no podemos ayudarte a registrar tu PQRS.\nInicia una nueva comunicación.", phone_number)
             return "end"
+        else:
+            send("Seleccione una opción válida.\n", phone_number)
+            
+            sendButtons(
+            "¿Aceptas el tratamiento de datos?",
+            phone_number,
+            buttons
+        )
+            
 
     if step == "2":
         try:
