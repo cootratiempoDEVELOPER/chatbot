@@ -39,7 +39,20 @@ async def receive_message(request: Request):
 
         message = value["messages"][0]
         phone_number = message["from"]
-        text = message["text"]["body"].strip().lower()
+        message_type = message.get("type")
+        
+        if message_type == "text":
+            text = message["text"]["body"].strip().lower()
+
+        elif message_type == "interactive":
+
+            interactive = message["interactive"]
+
+            if interactive["type"] == "button_reply":
+                text = interactive["button_reply"]["id"]
+
+            elif interactive["type"] == "list_reply":
+                text = interactive["list_reply"]["id"]
 
         res = supabase.table("session").select("*").eq("phone", phone_number).execute()
         now = datetime.now(timezone.utc)
@@ -127,5 +140,47 @@ def sendMessage(text, phone_number):
         "to": phone_number,
         "text": {"body": text}
     }
-    response = requests.post(url, headers=headers, json=payload)
-    print(f"Respuesta enviada: {response.status_code} - {response.text}")
+    requests.post(url, headers=headers, json=payload)
+
+
+def sendButtons(text, phone_number):
+    buttons = [
+        {
+            "type": "reply",
+            "reply": {
+                "id": "accept_yes",
+                "title": "Sí"
+            }
+        },
+        {
+            "type": "reply",
+            "reply": {
+                "id": "accept_no",
+                "title": "No"
+            }
+        }
+    ]
+
+    url = f"https://graph.facebook.com/v19.0/{WHATSAPP_PHONE}/messages"
+
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": phone_number,
+        "type": "interactive",
+        "interactive": {
+            "type": "button",
+            "body": {
+                "text": text
+            },
+            "action": {
+                "buttons": buttons
+            }
+        }
+    }
+
+    requests.post(url, headers=headers, json=payload)

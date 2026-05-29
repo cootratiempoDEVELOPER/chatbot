@@ -54,7 +54,6 @@ Para registrar una PQRS (Petición, Queja, Reclamo o Sugerencia), por favor ingr
 Su información esta siento tratada bajo la política de TRATAMIENTO DE DATOS PERSONALES que podrá consultar en el siguiente enlace https://acortar.link/zNC9Wr\n\n
 Para continuar su solicitud marque SI o NO\n\n
 ¿Autoriza que COOPERATIVA DE TRABAJADORES DE LA CASA EDITORIAL EL TIEMPO S A Y DE LAS EMPRESAS DE COMUNICACION EN COLOMBIA COOTRATIEMPO use sus datos para atención al ciudadano, publicidad, verificar datos, prospección comercial, gestión administrativa, contacto al correo electrónico, celular y WhatsApp, marketing, transmisión a proveedores para desarrollar estas finalidades? Es facultativo brindar datos sensibles o de menores. Podrá conocer, actualizar, rectificar o suprimir sus datos, requerir soporte de su autorización, ser informado sobre el uso de sus datos, presentar quejas ante la SIC, revocar la autorización y consultar la Política de Tratamiento de Datos en protegemostusdatoscootratiermpo@gmail.com, en la CL 35 #14-12 BOGOTÁ D.C o en el número(s) de contacto (601) 745-4745- 3124794425.\n\n
-Si está de acuerdo, responda de forma clara SI o NO.\n
   """
 
 def optionsPqrs():

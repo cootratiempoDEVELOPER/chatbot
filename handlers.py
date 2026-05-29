@@ -1,4 +1,7 @@
 from messages import welcome_message, info_servicios, horarios_atencion, pqrs, optionsPqrs, getBadWords, createPqrs
+from main import sendButtons
+
+
 
 def handle_main_menu(text, session, phone_number, send):
     if text == "1":
@@ -9,6 +12,10 @@ def handle_main_menu(text, session, phone_number, send):
         session["option"] = 2
     elif text == "3":
         send(pqrs, phone_number)
+        sendButtons(
+            "¿Aceptas el tratamiento de datos?",
+            phone_number,
+        )
         session["option"] = 3
         session["step"] = 1
     elif text == "4":
@@ -37,10 +44,8 @@ def handle_pqrs(text, session, phone_number, send):
     
     if step == "1":
         yes_no = text.lower()
-        if yes_no != "no" and yes_no != "si":
-            send("Por favor ingresa Si o No", phone_number)
-            return session
-        if yes_no == "si":
+        print(yes_no)
+        if yes_no == "accept_yes":
             session["step"] = 2
             send("Ingrese su numero de documento:\n", phone_number)
         else:
