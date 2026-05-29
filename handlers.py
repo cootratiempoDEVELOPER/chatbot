@@ -39,6 +39,7 @@ def handle_pqrs(text, session, phone_number, send):
         yes_no = text.lower()
         if yes_no != "no" and yes_no != "si":
             send("Por favor ingresa Si o No", phone_number)
+            return session
         if yes_no == "si":
             session["step"] = 2
             send("Ingrese su numero de documento:\n", phone_number)
