@@ -1,9 +1,25 @@
 from messages import welcome_message, info_servicios, horarios_atencion, pqrs, optionsPqrs, getBadWords, createPqrs
-from main import sendButtons
 
 
 
-def handle_main_menu(text, session, phone_number, send):
+def handle_main_menu(text, session, phone_number, send, sendButtons):
+    buttons = [
+        {
+            "type": "reply",
+            "reply": {
+                "id": "accept_yes",
+                "title": "Sí"
+            }
+        },
+        {
+            "type": "reply",
+            "reply": {
+                "id": "accept_no",
+                "title": "No"
+            }
+        }
+    ]
+    
     if text == "1":
         send(info_servicios, phone_number)
         session["option"] = 1
@@ -15,6 +31,7 @@ def handle_main_menu(text, session, phone_number, send):
         sendButtons(
             "¿Aceptas el tratamiento de datos?",
             phone_number,
+            buttons
         )
         session["option"] = 3
         session["step"] = 1
@@ -25,7 +42,7 @@ def handle_main_menu(text, session, phone_number, send):
         send("Por favor, ingresa una opción válida.", phone_number)
     return session
 
-def handle_info_servicios(text, session, phone_number, send):
+def handle_info_servicios(text, session, phone_number, send, sendButtons):
     if text == "menu":
         session["option"] = 0
         send(welcome_message, phone_number)
@@ -39,7 +56,7 @@ def handle_info_servicios(text, session, phone_number, send):
         send("Por favor, escribe 'menu', 'asesor' o 'salir'.", phone_number)
     return session
 
-def handle_pqrs(text, session, phone_number, send):
+def handle_pqrs(text, session, phone_number, send, sendButtons):
     step = session.get("step", 0)
     
     if step == "1":

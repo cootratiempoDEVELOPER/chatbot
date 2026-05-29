@@ -116,7 +116,7 @@ async def receive_message(request: Request):
         handler = handlers.get(option)
 
         if handler:
-            result = handler(text, session, phone_number, sendMessage)
+            result = handler(text, session, phone_number, sendMessage, sendButtons)
 
             if result == "end":
                 supabase.table("session").delete().eq("phone", phone_number).execute()
@@ -143,23 +143,7 @@ def sendMessage(text, phone_number):
     requests.post(url, headers=headers, json=payload)
 
 
-def sendButtons(text, phone_number):
-    buttons = [
-        {
-            "type": "reply",
-            "reply": {
-                "id": "accept_yes",
-                "title": "Sí"
-            }
-        },
-        {
-            "type": "reply",
-            "reply": {
-                "id": "accept_no",
-                "title": "No"
-            }
-        }
-    ]
+def sendButtons(text, phone_number, buttons):
 
     url = f"https://graph.facebook.com/v19.0/{WHATSAPP_PHONE}/messages"
 
