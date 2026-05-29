@@ -66,13 +66,11 @@ def handle_pqrs(text, session, phone_number, send, sendButtons):
             session["step"] = 2
             send("Ingrese su numero de documento:\n", phone_number)
         else:
-            send("Debido a que no aceptas las politicas de datos, no podemos ayudarte a registrar tu PQRS.", phone_number)
             session["step"] = 1
             session["opcion"] = 0
-            
-            send(welcome_message, phone_number)
-            
-            return session
+            send("Debido a que no aceptas las politicas de datos, no podemos ayudarte a registrar tu PQRS.", phone_number)
+            return "end"
+
     if step == "2":
         try:
             documento = int(text)
