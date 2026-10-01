@@ -43,10 +43,10 @@ buttons_exit = [
     
 
 def handle_main_menu(text, session, phone_number, send, sendButtons, sendList):
-    print(text)
+    print(text, type(text))
     if text == "1":
-        # send(info_servicios, phone_number)
-        sendButtons(info_servicios, phone_number, buttons_exit)
+        send(info_servicios, phone_number)
+        sendButtons("Puede seleccionar una de las siguientes opciones, o la solicitud finalizara de manera automatica luego de 5 minutos.", phone_number, buttons_exit)
         session["option"] = 1
     elif text == "2":
         send(horarios_atencion, phone_number)
