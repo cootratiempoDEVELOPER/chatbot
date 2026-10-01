@@ -170,12 +170,12 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         if successOptions:
             init_options = options[:9]
             init_options.append(
-                {"id": "mas", "name": "Otras opciones"}
+                {"id": "more_options", "name": "Otras opciones"}
             )
             sendList(
                 phone_number,
                 "Seleccione una de las opciones de PQRS.",
-                options_chunk,
+                init_options,
                 pqrs=True
             )
         else:
@@ -184,6 +184,28 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
     elif step == "5":
         successOptions, options = optionsPqrs()
         correctOption = [str(option['id']) for option in options]
+        if text == "more_options":
+            before_options = options[9:]
+            before_options.append(
+                {"id": "before_options", "name": "Opciones anteriores"}
+            )
+            sendList(
+                phone_number,
+                "Seleccione una de las opciones de PQRS.",
+                before_options,
+                pqrs=True
+            )
+        elif text == "before_options":
+            init_options = options[:9]
+            init_options.append(
+                {"id": "before_options", "name": "Opciones anteriores"}
+            )
+            sendList(
+                phone_number,
+                "Seleccione una de las opciones de PQRS.",
+                init_options,
+                pqrs=True
+            )
         if successOptions and text in correctOption:
             # send("Por favor, ingresa una descripcion de tu pqrs, en caso de no requerir ingresa, *No*\n", phone_number)
             sendButtons(
