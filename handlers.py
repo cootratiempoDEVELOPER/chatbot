@@ -168,7 +168,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         successOptions, options = optionsPqrs()
         
         if successOptions:
-            init_options = options[:9]
+            init_options = options[:8]
             init_options.append(
                 {"id": "more_options", "name": "Otras opciones"}
             )
@@ -185,7 +185,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         successOptions, options = optionsPqrs()
         correctOption = [str(option['id']) for option in options]
         if text == "more_options":
-            before_options = options[9:]
+            before_options = options[8:]
             before_options.append(
                 {"id": "before_options", "name": "Opciones anteriores"}
             )
@@ -196,7 +196,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
                 pqrs=True
             )
         elif text == "before_options":
-            init_options = options[:9]
+            init_options = options[:8]
             init_options.append(
                 {"id": "before_options", "name": "Opciones anteriores"}
             )
