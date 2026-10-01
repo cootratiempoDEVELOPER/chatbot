@@ -168,7 +168,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         successOptions, options = optionsPqrs()
         
         if successOptions:
-            init_options = options[:8]
+            init_options = options[:9]
             init_options.append(
                 {"id": "more_options", "name": "Otras opciones"}
             )
@@ -185,7 +185,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         successOptions, options = optionsPqrs()
         correctOption = [str(option['id']) for option in options]
         if text == "more_options":
-            before_options = options[8:]
+            before_options = options[9:]
             before_options.append(
                 {"id": "before_options", "name": "Opciones anteriores"}
             )
@@ -196,7 +196,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
                 pqrs=True
             )
         elif text == "before_options":
-            init_options = options[:8]
+            init_options = options[:9]
             init_options.append(
                 {"id": "before_options", "name": "Opciones anteriores"}
             )
@@ -206,7 +206,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
                 init_options,
                 pqrs=True
             )
-        if successOptions and text in correctOption:
+        elif successOptions and text in correctOption:
             # send("Por favor, ingresa una descripcion de tu pqrs, en caso de no requerir ingresa, *No*\n", phone_number)
             sendButtons(
                 "Deseas registrar una descripción?",
@@ -219,23 +219,16 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
             session["step"] = 6
             return session
         else:
-            if successOptions:
-                for i in range(0, len(options), 10):
-
-                    options_chunk = options[i:i + 10]
-
-                    if i == 0:
-                        message = "Selecciona el tipo de PQRS que deseas crear:"
-                    else:
-                        message = "Más tipos de PQRS. Selecciona una opción:"
-
-                    sendList(
-                        phone_number,
-                        message,
-                        options_chunk,
-                        pqrs=True
-                    )
-                    sendList(phone_number, "Por favor, selecciona una de las opciones: ", options, pqrs=True)
+            init_options = options[:9]
+            init_options.append(
+                {"id": "before_options", "name": "Opciones anteriores"}
+            )
+            sendList(
+                phone_number,
+                "Debe seleccionar una opcion de PQRS valida.",
+                init_options,
+                pqrs=True
+            )
 
     elif step == "6":
         text = text.strip().lower()
