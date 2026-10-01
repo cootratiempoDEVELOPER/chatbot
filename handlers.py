@@ -198,7 +198,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         elif text == "before_options":
             init_options = options[:9]
             init_options.append(
-                {"id": "before_options", "name": "Opciones anteriores"}
+                {"id": "before_options", "name": "Otras opciones"}
             )
             sendList(
                 phone_number,
