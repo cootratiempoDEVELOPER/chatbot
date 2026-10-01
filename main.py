@@ -143,7 +143,7 @@ def sendMessage(text, phone_number):
     }
     requests.post(url, headers=headers, json=payload)
 
-def sendMessageList(phone_number, text, options, button_text="Seleccionar"):
+def sendMessageList(phone_number, text, options, button_text="Seleccionar", pqrs=False):
 
     url = f"https://graph.facebook.com/v19.0/{WHATSAPP_PHONE}/messages"
 
@@ -157,10 +157,10 @@ def sendMessageList(phone_number, text, options, button_text="Seleccionar"):
     for option in options:
         rows.append({
             "id": option["id"],
-            "title": option["title"],
+            "title": option["name"] if pqrs else option["title"],
             "description": option["description"]
         })
-        
+       
     
     payload = {
         "messaging_product": "whatsapp",

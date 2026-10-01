@@ -59,9 +59,6 @@ horarios_atencion = """
   Nuestros horarios de atención son los siguientes:\n
   *Lunes a Viernes:* 8:00 AM - 6:00 PM\n
   *Sábados:* 8:00 AM - 12:00 PM\n
-  Si necesitas asistencia adicional, puedes escribir *asesor* en cualquier momento.
-  Si deseas volver al menú principal, escribe *menu*.
-  Si deseas salir, escribe *salir*.
   """
 
 
@@ -84,7 +81,13 @@ def optionsPqrs():
   
   tipos_pqrs = requests.get(API_URL, 
                             headers={"Authorization": API_TOKEN})
-  options = tipos_pqrs.json()
+  
+  if tipos_pqrs.ok:
+    options = tipos_pqrs.json()
+  else:
+    return False, []
+  
+  return True, options
   setOptions = [
     {
       'index': index + 1,
@@ -92,6 +95,7 @@ def optionsPqrs():
       'id': option['id']
     }
     for index, option in enumerate(options)]
+  
   text = """*Tipos de Solicitudes:*\n\n"""
   text += "Por favor, selecciona el numero del tipo de solicitud que deseas registrar:\n\n"
   for option in setOptions:

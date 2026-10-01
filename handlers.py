@@ -43,13 +43,13 @@ buttons_exit = [
     
 
 def handle_main_menu(text, session, phone_number, send, sendButtons, sendList):
-    print(text, type(text))
     if text == "1":
         send(info_servicios, phone_number)
-        sendButtons("Puede seleccionar una de las siguientes opciones, o la solicitud finalizara de manera automatica luego de 5 minutos.", phone_number, buttons_exit)
+        sendButtons("Puede seleccionar una de las siguientes opciones. Si no selecciona ninguna, la solicitud finalizará automáticamente después de 5 minutos.", phone_number, buttons_exit)
         session["option"] = 1
     elif text == "2":
         send(horarios_atencion, phone_number)
+        sendButtons("Puede seleccionar una de las siguientes opciones. Si no selecciona ninguna, la solicitud finalizará automáticamente después de 5 minutos.", phone_number, buttons_exit)
         session["option"] = 2
     elif text == "3":
         send(pqrs, phone_number)
@@ -68,7 +68,7 @@ def handle_main_menu(text, session, phone_number, send, sendButtons, sendList):
     return session
 
 def handle_info_servicios(text, session, phone_number, send, sendButtons, sendList):
-    if text == "menu":
+    if text in ["menu", "Menu", "menú", "Menú"]:
         session["option"] = 0
         send(welcome_message, phone_number)
     elif text == "asesor":
@@ -164,13 +164,16 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         session["email"] = email
         session["step"] = 5
 
-        optionsText, successOptions, options = optionsPqrs()
-        
-        send(optionsText, phone_number)
+        successOptions, options = optionsPqrs()
+        if succesCreated:
+            sendList(phone_number, "Selecciones el tipo de PQRS que desea crear: ", options, pqrs=True)
+        else:
+            send("En este momento no se pueden crear PQRS, por favor comuniquese al https://wa.me/573144756457.")
 
     elif step == "5":
-        optionsText, successOptions, options = optionsPqrs()
-        if text in successOptions:
+        successOptions, options = optionsPqrs()
+        correctOption = [str(option['index']) for option in options]
+        if successOptions and text in correctOption:
             # send("Por favor, ingresa una descripcion de tu pqrs, en caso de no requerir ingresa, *No*\n", phone_number)
             sendButtons(
                 "Desea registrar una descripción?",
@@ -183,12 +186,16 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
             session["step"] = 6
             return session
         else:
-            send(f"Por favor, selecciona un número válido.\n {optionsText}", phone_number)
+            sendList(phone_number, "Por favor, seleccione una de las opciones: ", options, pqrs=True)
 
     elif step == "6":
         text = text.strip().lower()
         if text not in ["si", "no"]:
-            send("Por favor, responde con *Si* o *No*.", phone_number)
+            sendButtons(
+                "Debe seleccionar una de las siguientes opciones: ",
+                phone_number,
+                buttons
+            )
             return session
 
         text = text.strip().lower()
