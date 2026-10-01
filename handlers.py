@@ -184,7 +184,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
                 buttons
             )
             # send("Desea registrar una descripción? *Si/No*", phone_number)
-            findOption = [i["id"] for i in options if i['index'] == int(text)][0]
+            findOption = [i["id"] for i in options if i['id'] == int(text)][0]
             session["pqrs"] = findOption
             session["step"] = 6
             return session
