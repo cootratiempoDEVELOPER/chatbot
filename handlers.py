@@ -16,12 +16,37 @@ buttons = [
         }
     }
 ]
+
+buttons_exit = [
+    {
+        "type": "reply",
+        "reply": {
+            "id": "asesor",
+            "title": "Contactar asesor"
+        }
+    },
+    {
+        "type": "reply",
+        "reply": {
+            "id": "menu",
+            "title": "Menu principal"
+        }
+    },
+    {
+        "type": "reply",
+        "reply": {
+            "id": "salir",
+            "title": "Finalizar solicitud"
+        }
+    }
+]
     
 
 def handle_main_menu(text, session, phone_number, send, sendButtons, sendList):
 
     if text == "1":
-        send(info_servicios, phone_number)
+        # send(info_servicios, phone_number)
+        sendButtons(info_servicios, phone_number, buttons_exit)
         session["option"] = 1
     elif text == "2":
         send(horarios_atencion, phone_number)
@@ -53,7 +78,7 @@ def handle_info_servicios(text, session, phone_number, send, sendButtons, sendLi
         send("Gracias por contactarnos. ¡Hasta luego!", phone_number)
         return "end"
     else:
-        send("Por favor, escribe 'menu', 'asesor' o 'salir'.", phone_number)
+        sendButtons("Por favor, seleccione una de las siguientes opciones: ", phone_number, buttons_exit)
     return session
 
 def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):

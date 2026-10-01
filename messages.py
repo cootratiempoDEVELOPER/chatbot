@@ -53,9 +53,6 @@ info_servicios = """
   https://www.facebook.com/profile.php?id=100085403948147\n
   https://www.instagram.com/cootratiempo/\n\n
   Si deseas más información sobre alguno de estos servicios, no dudes en preguntar. Estamos aquí para ayudarte.\n
-  Si necesitas asistencia adicional, puedes escribir asesor en cualquier momento.\n
-  Si deseas volver al menú principal, escribe menu.\n
-  Si deseas salir, escribe salir.\n
   """
   
 horarios_atencion = """
