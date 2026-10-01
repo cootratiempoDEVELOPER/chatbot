@@ -61,7 +61,6 @@ def handle_pqrs(text, session, phone_number, send, sendButtons):
     
     if step == "1":
         yes_no = text.lower()
-        print(yes_no)
         if yes_no == "accept_yes":
             session["step"] = 2
             send("Ingrese su numero de documento:\n", phone_number)
@@ -74,11 +73,11 @@ def handle_pqrs(text, session, phone_number, send, sendButtons):
             send("Seleccione una opción válida.\n", phone_number)
             
             sendButtons(
-            "¿Aceptas el tratamiento de datos?",
-            phone_number,
-            buttons
-        )
-            
+                "¿Aceptas el tratamiento de datos?",
+                phone_number,
+                buttons
+            )
+                
 
     if step == "2":
         try:
@@ -148,7 +147,12 @@ def handle_pqrs(text, session, phone_number, send, sendButtons):
         optionsText, successOptions, options = optionsPqrs()
         if text in successOptions:
             # send("Por favor, ingresa una descripcion de tu pqrs, en caso de no requerir ingresa, *No*\n", phone_number)
-            send("Desea registrar una descripción? *Si/No*", phone_number)
+            sendButtons(
+                "Desea registrar una descripción?",
+                phone_number,
+                buttons
+            )
+            # send("Desea registrar una descripción? *Si/No*", phone_number)
             findOption = [i["id"] for i in options if i['index'] == int(text)][0]
             session["pqrs"] = findOption
             session["step"] = 6

@@ -1,9 +1,28 @@
+OPTIONS_LIST_WELCOME = [
+        {
+            "id": "1",
+            "title": "Información de servicios",
+            "description": ""
+        },
+        {
+            "id": "2",
+            "title": "Horarios de atención",
+            "description": ""
+        },
+        {
+            "id": "3",
+            "title": "Registrar PQRS",
+            "description": ""
+        },
+        {
+            "id": "4",
+            "title": "Hablar con un asesor",
+            "description": ""
+        }
+    ]
+
 welcome_message = """
-  Hola, te habla el asistente virtual Cootratiempo, ingresa el numero de tu solicitud.\n
-  *1)* Información de servicios\n
-  *2)* Horarios de atención\n
-  *3)* Registrar PQRS\n
-  *4)* Hablar con un asesor\n\n
+  Hola, te habla el asistente virtual Cootratiempo, seleccione una de las opciones.\n
   En cualquier momento puedes escribir *Menu* para volver a este menú o *Salir* para finalizar la conversación.\n
   Si necesitas asistencia adicional, puedes escribir *Asesor* en cualquier momento.
 """

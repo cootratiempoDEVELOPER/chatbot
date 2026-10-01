@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from handlers import handlers
 from fastapi.responses import JSONResponse, PlainTextResponse
 from supabase_client import supabase  # ✅ ya contiene el client creado
-from messages import welcome_message
+from messages import welcome_message, OPTIONS_LIST_WELCOME
 from datetime import datetime, timezone, timedelta
 
 load_dotenv()
@@ -65,7 +65,8 @@ async def receive_message(request: Request):
                 "init": True,
                 "updated_at": now.isoformat()
             }).execute()
-            sendMessage(welcome_message, phone_number)
+            sendMessageList(phone_number, welcome_message, OPTIONS_LIST_WELCOME)
+            # sendMessage(welcome_message, phone_number)
         else:
             now = datetime.now(timezone.utc)
             session = res.data[0]
@@ -102,7 +103,8 @@ async def receive_message(request: Request):
 
         # Si el usuario escribe "menu"
         if text == "menu":
-            sendMessage(welcome_message, phone_number)
+            # sendMessage(welcome_message, phone_number)
+            sendMessageList(phone_number, welcome_message, OPTIONS_LIST_WELCOME)
             supabase.table("session").update({"option": 0, "step": 1}).eq("phone", phone_number).execute()
             return {"status": "menu displayed"}
         
@@ -141,6 +143,52 @@ def sendMessage(text, phone_number):
         "text": {"body": text}
     }
     requests.post(url, headers=headers, json=payload)
+
+def sendMessageList(phone_number, text, options, button_text="Seleccionar"):
+
+    url = f"https://graph.facebook.com/v19.0/{WHATSAPP_PHONE}/messages"
+
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    rows = []
+    
+    for option in options:
+        rows.append({
+            "id": option["id"],
+            "title": option["title"],
+            "description": option["description"]
+        })
+        
+    
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": phone_number,
+        "type": "interactive",
+        "interactive": {
+            "type": "list",
+            "body": {
+                "text": text
+            },
+            "action": {
+                "button": button_text,
+                "sections": [
+                    {
+                        "title": "Opciones",
+                        "rows": rows
+                    }
+                ]
+            }
+        }
+    }
+
+    requests.post(
+        url,
+        headers=headers,
+        json=payload
+    )
 
 
 def sendButtons(text, phone_number, buttons):
