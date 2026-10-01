@@ -167,9 +167,23 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         
         successOptions, options = optionsPqrs()
         
-        print(successOptions, options)
-        if successOptions:
-            sendList(phone_number, "Selecciona el tipo de PQRS que deseas crear: ", options, pqrs=True)
+    if successOptions:
+
+        for i in range(0, len(options), 10):
+
+            options_chunk = options[i:i + 10]
+
+            if i == 0:
+                message = "Selecciona el tipo de PQRS que deseas crear:"
+            else:
+                message = "Más tipos de PQRS. Selecciona una opción:"
+
+            sendList(
+                phone_number,
+                message,
+                options_chunk,
+                pqrs=True
+            )
         else:
             send("En este momento no se pueden crear PQRS, por favor comunicate al Whatsapp https://wa.me/573144756457.")
 
@@ -189,7 +203,23 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
             session["step"] = 6
             return session
         else:
-            sendList(phone_number, "Por favor, selecciona una de las opciones: ", options, pqrs=True)
+            if successOptions:
+                for i in range(0, len(options), 10):
+
+                    options_chunk = options[i:i + 10]
+
+                    if i == 0:
+                        message = "Selecciona el tipo de PQRS que deseas crear:"
+                    else:
+                        message = "Más tipos de PQRS. Selecciona una opción:"
+
+                    sendList(
+                        phone_number,
+                        message,
+                        options_chunk,
+                        pqrs=True
+                    )
+                    sendList(phone_number, "Por favor, selecciona una de las opciones: ", options, pqrs=True)
 
     elif step == "6":
         text = text.strip().lower()
