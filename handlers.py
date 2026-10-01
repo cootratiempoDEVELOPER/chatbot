@@ -45,11 +45,11 @@ buttons_exit = [
 def handle_main_menu(text, session, phone_number, send, sendButtons, sendList):
     if text == "1":
         send(info_servicios, phone_number)
-        sendButtons("Puede seleccionar una de las siguientes opciones. Si no selecciona ninguna, la solicitud finalizará automáticamente después de 5 minutos.", phone_number, buttons_exit)
+        sendButtons("Puede seleccionar una de las siguientes opciones. Si no selecciona ninguna, la solicitud finalizará automáticamente después de 15 minutos.", phone_number, buttons_exit)
         session["option"] = 1
     elif text == "2":
         send(horarios_atencion, phone_number)
-        sendButtons("Puede seleccionar una de las siguientes opciones. Si no selecciona ninguna, la solicitud finalizará automáticamente después de 5 minutos.", phone_number, buttons_exit)
+        sendButtons("Puede seleccionar una de las siguientes opciones. Si no selecciona ninguna, la solicitud finalizará automáticamente después de 15 minutos.", phone_number, buttons_exit)
         session["option"] = 2
     elif text == "3":
         send(pqrs, phone_number)
@@ -88,7 +88,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         yes_no = text.lower()
         if yes_no == "accept_yes":
             session["step"] = 2
-            send("Ingrese su numero de documento:\n", phone_number)
+            send("Ingresa el numero de documento, sin puntos ni espacios\n", phone_number)
         elif yes_no == "accept_no":
             session["step"] = 1
             session["opcion"] = 0
@@ -113,9 +113,9 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
                 raise ValueError("El número de documento debe tener entre 6 y 11 digitos.")
             session["document"] = documento
             session["step"] = 3
-            send("Por favor, ingrese su nombre completo:", phone_number)
+            send("Por favor, ingresa tu nombre completo", phone_number)
         except ValueError:
-            send("Número de documento inválido. Ingrese un valor numerico", phone_number)
+            send("Número de documento inválido. Ingresa un valor numerico", phone_number)
 
     elif step == "3":
         nombre = text.strip()
@@ -127,11 +127,11 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         # 2. Verifica que tenga al menos dos palabras
         palabras = nombre.split()
         if len(palabras) < 2:
-            send("Debe ingresar al menos nombre y apellido.", phone_number)
+            send("Debes ingresar al menos nombre y apellido.", phone_number)
             return session
         # 3. Verifica que solo contenga letras y espacios
         if not all(palabra.isalpha() for palabra in palabras):
-            send("El nombre solo debe contener letras. No use números ni símbolos.", phone_number)
+            send("El nombre solo debe contener letras. No uses números ni símbolos.", phone_number)
             return session
 
         # 4. Verifica que cada palabra tenga al menos 2 letras
@@ -147,12 +147,12 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         # ✅ Si pasa todas las validaciones, guarda en la sesión
         session["name"] = nombre
         session["step"] = 4
-        send("Por favor, ingrese su correo electrónico:", phone_number)
+        send("Por favor, ingresa tu correo electrónico", phone_number)
 
     elif step == "4":
         email = text.strip()
         if "@" not in email or "." not in email:
-            send("Correo electrónico inválido. Por favor, ingrese un correo válido.", phone_number)
+            send("Correo electrónico inválido. Por favor, ingresa un correo válido.", phone_number)
             return session
         if len(email) > 50:
             send("El correo electrónico es demasiado largo. Intente abreviarlo.", phone_number)
@@ -165,10 +165,10 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         session["step"] = 5
 
         successOptions, options = optionsPqrs()
-        if succesCreated:
-            sendList(phone_number, "Selecciones el tipo de PQRS que desea crear: ", options, pqrs=True)
+        if successOptions:
+            sendList(phone_number, "Selecciona el tipo de PQRS que deseas crear: ", options, pqrs=True)
         else:
-            send("En este momento no se pueden crear PQRS, por favor comuniquese al https://wa.me/573144756457.")
+            send("En este momento no se pueden crear PQRS, por favor comunicate al Whatsapp https://wa.me/573144756457.")
 
     elif step == "5":
         successOptions, options = optionsPqrs()
@@ -176,7 +176,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         if successOptions and text in correctOption:
             # send("Por favor, ingresa una descripcion de tu pqrs, en caso de no requerir ingresa, *No*\n", phone_number)
             sendButtons(
-                "Desea registrar una descripción?",
+                "Deseas registrar una descripción?",
                 phone_number,
                 buttons
             )
@@ -186,13 +186,13 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
             session["step"] = 6
             return session
         else:
-            sendList(phone_number, "Por favor, seleccione una de las opciones: ", options, pqrs=True)
+            sendList(phone_number, "Por favor, selecciona una de las opciones: ", options, pqrs=True)
 
     elif step == "6":
         text = text.strip().lower()
         if text not in ["si", "no"]:
             sendButtons(
-                "Debe seleccionar una de las siguientes opciones: ",
+                "Debes seleccionar una de las siguientes opciones: ",
                 phone_number,
                 buttons
             )
