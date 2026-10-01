@@ -43,7 +43,7 @@ buttons_exit = [
     
 
 def handle_main_menu(text, session, phone_number, send, sendButtons, sendList):
-
+    print(text)
     if text == "1":
         # send(info_servicios, phone_number)
         sendButtons(info_servicios, phone_number, buttons_exit)

@@ -40,7 +40,8 @@ async def receive_message(request: Request):
         message = value["messages"][0]
         phone_number = message["from"]
         message_type = message.get("type")
-        
+        print("MESSAGE TYPE:", message_type)
+        print("MESSAGE:", message)
         if message_type == "text":
             text = message["text"]["body"].strip().lower()
 
