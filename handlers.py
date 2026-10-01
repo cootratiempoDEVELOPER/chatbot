@@ -232,7 +232,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
 
     elif step == "6":
         text = text.strip().lower()
-        if text not in ["si", "no"]:
+        if text not in ["accept_yes", "accept_no"]:
             sendButtons(
                 "Debes seleccionar una de las siguientes opciones: ",
                 phone_number,
@@ -241,7 +241,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
             return session
 
         text = text.strip().lower()
-        if text.lower() == "no":
+        if text.lower() == "accept_no":
             session["description"] = "No se proporcionó descripción."
             succesCreated, created = createPqrs(session, phone_number)
             numPqrs = created['num']

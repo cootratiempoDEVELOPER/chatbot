@@ -184,14 +184,11 @@ def sendMessageList(phone_number, text, options, button_text="Seleccionar", pqrs
         }
     }
 
-    response = requests.post(
+    requests.post(
         url,
         headers=headers,
         json=payload
     )
-    
-    print("STATUS:", response.status_code)
-    print("RESPONSE:", response.text)
 
 
 def sendButtons(text, phone_number, buttons):
