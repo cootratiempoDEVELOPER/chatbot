@@ -232,6 +232,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
 
     elif step == "6":
         text = text.strip().lower()
+        print("aca se sabe de descripcion", text)
         if text not in ["accept_yes", "accept_no"]:
             sendButtons(
                 "Debes seleccionar una de las siguientes opciones: ",
