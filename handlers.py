@@ -83,7 +83,7 @@ def handle_info_servicios(text, session, phone_number, send, sendButtons, sendLi
 
 def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
     step = session.get("step", 0)
-    
+    print(text, step)
     if step == "1":
         yes_no = text.lower()
         if yes_no == "accept_yes":
@@ -167,20 +167,14 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
         
         successOptions, options = optionsPqrs()
         
-    if successOptions:
-
-        for i in range(0, len(options), 10):
-
-            options_chunk = options[i:i + 10]
-
-            if i == 0:
-                message = "Selecciona el tipo de PQRS que deseas crear:"
-            else:
-                message = "Más tipos de PQRS. Selecciona una opción:"
-
+        if successOptions:
+            init_options = options[:9]
+            init_options.append(
+                {"id": "mas", "name": "Otras opciones"}
+            )
             sendList(
                 phone_number,
-                message,
+                "Seleccione una de las opciones de PQRS.",
                 options_chunk,
                 pqrs=True
             )
