@@ -175,7 +175,7 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
 
     elif step == "5":
         successOptions, options = optionsPqrs()
-        correctOption = [str(option['index']) for option in options]
+        correctOption = [str(option['id']) for option in options]
         if successOptions and text in correctOption:
             # send("Por favor, ingresa una descripcion de tu pqrs, en caso de no requerir ingresa, *No*\n", phone_number)
             sendButtons(
