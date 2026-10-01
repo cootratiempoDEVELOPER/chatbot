@@ -88,21 +88,21 @@ def optionsPqrs():
     return False, []
   
   return True, options
-  setOptions = [
-    {
-      'index': index + 1,
-      'option': option['name'],
-      'id': option['id']
-    }
-    for index, option in enumerate(options)]
+  # setOptions = [
+  #   {
+  #     'index': index + 1,
+  #     'option': option['name'],
+  #     'id': option['id']
+  #   }
+  #   for index, option in enumerate(options)]
   
-  text = """*Tipos de Solicitudes:*\n\n"""
-  text += "Por favor, selecciona el numero del tipo de solicitud que deseas registrar:\n\n"
-  for option in setOptions:
-    text += f"*{option['index']})*  {option['option']}\n"
+  # text = """*Tipos de Solicitudes:*\n\n"""
+  # text += "Por favor, selecciona el numero del tipo de solicitud que deseas registrar:\n\n"
+  # for option in setOptions:
+  #   text += f"*{option['index']})*  {option['option']}\n"
   
-  successOptions = [str(option['index']) for option in setOptions]
-  return text, successOptions, setOptions
+  # successOptions = [str(option['index']) for option in setOptions]
+  # return text, successOptions, setOptions
 
 def getBadWords():
     """

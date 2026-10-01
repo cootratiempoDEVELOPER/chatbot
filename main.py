@@ -156,7 +156,7 @@ def sendMessageList(phone_number, text, options, button_text="Seleccionar", pqrs
     
     for option in options:
         rows.append({
-            "id": option["id"],
+            "id": str(option["id"]),
             "title": option["name"] if pqrs else option["title"],
             "description": "" if pqrs else option["description"]
         })
@@ -183,11 +183,14 @@ def sendMessageList(phone_number, text, options, button_text="Seleccionar", pqrs
         }
     }
 
-    requests.post(
+    response = requests.post(
         url,
         headers=headers,
         json=payload
     )
+    
+    print("STATUS:", response.status_code)
+    print("RESPONSE:", response.text)
 
 
 def sendButtons(text, phone_number, buttons):
