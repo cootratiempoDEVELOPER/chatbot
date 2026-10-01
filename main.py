@@ -155,9 +155,10 @@ def sendMessageList(phone_number, text, options, button_text="Seleccionar", pqrs
     rows = []
     
     for option in options:
+        title = option["name"] if pqrs else option["title"]
         rows.append({
             "id": str(option["id"]),
-            "title": option["name"] if pqrs else option["title"],
+            "title": title[:24],
             "description": "" if pqrs else option["description"]
         })
        
