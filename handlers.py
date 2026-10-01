@@ -163,8 +163,10 @@ def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
             return session
         session["email"] = email
         session["step"] = 5
-        send("Su correo es valido, espere unos segundos...")
+        send("Su correo es valido, espere unos segundos...", phone_number)
+        
         successOptions, options = optionsPqrs()
+        
         print(successOptions, options)
         if successOptions:
             sendList(phone_number, "Selecciona el tipo de PQRS que deseas crear: ", options, pqrs=True)
