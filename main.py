@@ -118,7 +118,7 @@ async def receive_message(request: Request):
         handler = handlers.get(option)
 
         if handler:
-            result = handler(text, session, phone_number, sendMessage, sendButtons)
+            result = handler(text, session, phone_number, sendMessage, sendButtons, sendMessageList)
 
             if result == "end":
                 supabase.table("session").delete().eq("phone", phone_number).execute()

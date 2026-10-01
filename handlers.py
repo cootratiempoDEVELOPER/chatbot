@@ -1,4 +1,4 @@
-from messages import welcome_message, info_servicios, horarios_atencion, pqrs, optionsPqrs, getBadWords, createPqrs
+from messages import welcome_message, info_servicios, horarios_atencion, pqrs, optionsPqrs, getBadWords, createPqrs, OPTIONS_LIST_WELCOME
 
 buttons = [
     {
@@ -18,7 +18,7 @@ buttons = [
 ]
     
 
-def handle_main_menu(text, session, phone_number, send, sendButtons):
+def handle_main_menu(text, session, phone_number, send, sendButtons, sendList):
 
     if text == "1":
         send(info_servicios, phone_number)
@@ -39,10 +39,10 @@ def handle_main_menu(text, session, phone_number, send, sendButtons):
         send("Para comunicarte directamente con un asesor escribenos a este numero: https://wa.me/573144756457", phone_number)
         session["option"] = 4
     else:
-        send("Por favor, ingresa una opción válida.", phone_number)
+        sendList(phone_number, "Por favor, ingresa una opción válida.", OPTIONS_LIST_WELCOME)
     return session
 
-def handle_info_servicios(text, session, phone_number, send, sendButtons):
+def handle_info_servicios(text, session, phone_number, send, sendButtons, sendList):
     if text == "menu":
         session["option"] = 0
         send(welcome_message, phone_number)
@@ -56,7 +56,7 @@ def handle_info_servicios(text, session, phone_number, send, sendButtons):
         send("Por favor, escribe 'menu', 'asesor' o 'salir'.", phone_number)
     return session
 
-def handle_pqrs(text, session, phone_number, send, sendButtons):
+def handle_pqrs(text, session, phone_number, send, sendButtons, sendList):
     step = session.get("step", 0)
     
     if step == "1":
